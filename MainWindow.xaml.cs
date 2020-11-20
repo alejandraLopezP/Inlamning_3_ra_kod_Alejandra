@@ -26,7 +26,8 @@ namespace Inlamning_3_ra_kod
         {
             // This line must be executed first:
             InitializeComponent();
-
+            // int X = 12;
+            // MessageBox.Show($"X = {X}");
             // Own stuff here:
             cs = new CStack();
             LetterField.Text = "T:\nZ:\nY:\nX:\n▹";

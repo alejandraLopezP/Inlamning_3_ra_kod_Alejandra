@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,8 @@ namespace Inlamning_3_ra_kod
     public class CStack
     {
         public double X, Y, Z, T;
-        public string entry;
+        public string entry, entryVar;
+        public string[,] address;
         /* CONSTRUCTOR: CStack
          * PURPOSE: create a new stack and init X, Y, Z, T and the text entry
          * PARAMETERS: --
@@ -28,7 +30,18 @@ namespace Inlamning_3_ra_kod
         public CStack()
         {
             X = Y = Z = T = 0;
+            address = new string[8, 2] {
+                { "A", "0" },
+                { "B", "0" },
+                { "C", "0" },
+                { "D", "0" },
+                { "E", "0" },
+                { "F", "0" },
+                { "G", "0" },
+                { "H", "0" }
+            };
             entry = "";
+            entryVar = "";
         }
         /* METHOD: Exit
          * PURPOSE: called on exit, prepared for saving
@@ -56,7 +69,7 @@ namespace Inlamning_3_ra_kod
          */
         public string VarString()
         {
-            return "insertme";
+            return $"{address[0,1]}\n{address[1,1]}\n{address[2, 1]}\n{address[3, 1]}\n{address[4, 1]}\n{address[5, 1]}\n{address[6, 1]}\n{address[7, 1]}\n{entryVar} = {X}";
         }
         /* METHOD: SetX
          * PURPOSE: set X with overwrite
@@ -249,7 +262,8 @@ namespace Inlamning_3_ra_kod
          */
         public void SetAddress(string name)
         {
-
+            entryVar = name;
+            
         }
         /* METHOD: SetVar
          * PURPOSE: 
@@ -259,7 +273,13 @@ namespace Inlamning_3_ra_kod
          */
         public void SetVar()
         {
-
+            for (int i = 0; i < address.GetLength(0); i++)
+            {
+                if (address[i, 0] == entryVar)
+                {
+                    address[i, 1] = X.ToString();
+                }
+            }
         }
         /* METHOD: GetVar
          * PURPOSE: 
@@ -269,7 +289,15 @@ namespace Inlamning_3_ra_kod
          */
         public void GetVar()
         {
+            for (int i = 0; i < address.GetLength(0); i++)
+            {
+                if (address[i, 0] == entryVar)
+                {
+                    entry = address[i, 1];
+                }
+            }
 
+            X = Y; Y = Z; Z = T; T = 0;
         }
     }
 }
