@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inlamning_3_ra_kod", "Inlamning_3_ra_kod.csproj", "{DCDCB4FE-4FAC-4B8E-8022-28CE1014D873}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inlamning_3_ra_kodTests1", "..\Inlamning_3_ra_kodTests1\Inlamning_3_ra_kodTests1.csproj", "{AFD3BF0A-2A03-439E-92CC-608C5FAD78EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{DCDCB4FE-4FAC-4B8E-8022-28CE1014D873}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCDCB4FE-4FAC-4B8E-8022-28CE1014D873}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCDCB4FE-4FAC-4B8E-8022-28CE1014D873}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFD3BF0A-2A03-439E-92CC-608C5FAD78EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFD3BF0A-2A03-439E-92CC-608C5FAD78EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFD3BF0A-2A03-439E-92CC-608C5FAD78EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFD3BF0A-2A03-439E-92CC-608C5FAD78EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

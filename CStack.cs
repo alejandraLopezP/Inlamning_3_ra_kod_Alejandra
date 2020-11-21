@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,8 @@ namespace Inlamning_3_ra_kod
         public double X, Y, Z, T;
         public string entry, entryVar;
         public string[,] address;
+        public string _path;
+        public bool fileExist = false;
         /* CONSTRUCTOR: CStack
          * PURPOSE: create a new stack and init X, Y, Z, T and the text entry
          * PARAMETERS: --
@@ -43,6 +46,56 @@ namespace Inlamning_3_ra_kod
             entry = "";
             entryVar = "";
         }
+        /* CONSTRUCTOR: CStack
+         * PURPOSE: create a new stack and init X, Y, Z, T and the text entry
+         * PARAMETERS: --
+         */
+
+        public CStack(string path)
+        {
+            _path = path;
+            address = new string[8, 2] {
+                { "A", "0" },
+                { "B", "0" },
+                { "C", "0" },
+                { "D", "0" },
+                { "E", "0" },
+                { "F", "0" },
+                { "G", "0" },
+                { "H", "0" }
+            };
+
+            entry = "";
+            entryVar = "";
+
+            if (!File.Exists(_path))
+            {
+                fileExist = true;
+                return;
+            }
+            using (StreamReader sr = new StreamReader(_path))
+            {
+                int i = 0;
+                while (sr.Peek() >= 0)
+                {
+                    string line = sr.ReadLine();
+                    string[] data = line.Split(',');
+
+                    if(data[0] == "1")
+                    {
+                        address[i, 1] = data[2];
+                    } else
+                    {
+                        if (data[1] == "X") { X = double.Parse(data[2]); }
+                        if (data[1] == "Y") { Y = double.Parse(data[2]); }
+                        if (data[1] == "T") { T = double.Parse(data[2]); }
+                        if (data[1] == "Z") { Z = double.Parse(data[2]); }
+                    }
+                    i++;
+                }
+            }
+        }
+
         /* METHOD: Exit
          * PURPOSE: called on exit, prepared for saving
          * PARAMETERS: --
@@ -50,7 +103,7 @@ namespace Inlamning_3_ra_kod
          */
         public void Exit()
         {
-
+            SaveVarInFile();
         }
         /* METHOD: StackString
          * PURPOSE: construct a string to write out in a stack view
@@ -65,11 +118,11 @@ namespace Inlamning_3_ra_kod
         /* METHOD: VarString
          * PURPOSE: construct a string to write out in a variable list
          * PARAMETERS: --
-         * RETURNS: NOT YET IMPLEMENTED
+         * RETURNS: --
          */
         public string VarString()
         {
-            return $"{address[0, 1]}\n{address[1, 1]}\n{address[2, 1]}\n{address[3, 1]}\n{address[4, 1]}\n{address[5, 1]}\n{address[6, 1]}\n{address[7, 1]}\n{entryVar} = {X}";
+            return $"{address[0, 1]}\n{address[1, 1]}\n{address[2, 1]}\n{address[3, 1]}\n{address[4, 1]}\n{address[5, 1]}\n{address[6, 1]}\n{address[7, 1]}";
         }
         /* METHOD: SetX
          * PURPOSE: set X with overwrite
@@ -155,7 +208,7 @@ namespace Inlamning_3_ra_kod
          */
         public void Drop()
         {
-            X = Y; Y = Z; Z = T;
+            X = Y; Y = Z; Z = T; T = 0;
         }
         /* METHOD: DropSetX
          * PURPOSE: replaces the value of X, and rolls down
@@ -244,7 +297,7 @@ namespace Inlamning_3_ra_kod
             double tmp = T;
             T = Z; Z = Y; Y = X; X = tmp;
         }
-        /* METHOD: Roll
+        /* METHOD: RollSetX
          * PURPOSE: rolls the stack up and puts a new value in X
          * PARAMETERS: double newX - the new value to put into X
          * RETURNS: --
@@ -266,10 +319,9 @@ namespace Inlamning_3_ra_kod
 
         }
         /* METHOD: SetVar
-         * PURPOSE: 
+         * PURPOSE: Assign a value to a specific variabel from A ..H
          * PARAMETERS: --
          * RETURNS: --
-         * FEATURES: NOT YET IMPLEMENTED
          */
         public void SetVar()
         {
@@ -282,10 +334,9 @@ namespace Inlamning_3_ra_kod
             }
         }
         /* METHOD: GetVar
-         * PURPOSE: 
+         * PURPOSE: Get the value of a specific variabel from A ..H
          * PARAMETERS: --
          * RETURNS: --
-         * FEATURES: NOT YET IMPLEMENTED
          */
         public void GetVar()
         {
@@ -298,6 +349,36 @@ namespace Inlamning_3_ra_kod
             }
 
             X = Y; Y = Z; Z = T; T = 0;
+        }
+        /* METHOD: SaveVarInFile
+       * PURPOSE: Save the valueS of all variabels from A ..H and X,Y,Z,T in a File .txt
+       * PARAMETERS: --
+       * RETURNS: --
+       */
+        public void SaveVarInFile()
+        {
+            if (!fileExist)
+                return;
+
+            string pathCopy = _path.Substring(0, _path.Length - 4) + "_copy" + ".txt";
+            using (StreamWriter sw = File.CreateText(pathCopy))
+            {
+                for (int i = 0; i < address.GetLength(0); i++)
+                {
+                    string line = "1," + address[i, 0] + "," + address[i, 1];
+                    sw.WriteLine(line);
+                }
+                string lineT = "2,T," + T;
+                sw.WriteLine(lineT);
+                string lineZ = "2,Z," + Z;
+                sw.WriteLine(lineZ);
+                string lineY = "2,Y," + Y;
+                sw.WriteLine(lineY);
+                string lineX = "2,Z," + X;
+                sw.WriteLine(lineX);
+            }
+            File.Delete(_path);
+            File.Move(pathCopy, _path);
         }
     }
 }

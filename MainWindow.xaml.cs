@@ -29,7 +29,8 @@ namespace Inlamning_3_ra_kod
             // int X = 12;
             // MessageBox.Show($"X = {X}");
             // Own stuff here:
-            cs = new CStack();
+            cs = new CStack(@".\variabelFile.txt");
+            // cs = new CStack();
             LetterField.Text = "T:\nZ:\nY:\nX:\n▹";
             VarLetterField.Text = "A=\nB=\nC=\nD=\nE=\nF=\nG=\nH=\n▹";
             UpdateNumberField();
