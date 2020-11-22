@@ -27,7 +27,8 @@ namespace Inlamning_3_ra_kod
         public string _path;
         public bool fileExist = false;
         /* CONSTRUCTOR: CStack
-         * PURPOSE: create a new stack and init X, Y, Z, T and the text entry
+         * PURPOSE: create a new stack and init X, Y, Z, T,A,B,C,D,E,F,G,H
+         * and the text entry for variabels: X, Y, Z, T and entryVar for variabels:A,B,C,D,E,F,G,H
          * PARAMETERS: --
          */
         public CStack()
@@ -47,13 +48,14 @@ namespace Inlamning_3_ra_kod
             entryVar = "";
         }
         /* CONSTRUCTOR: CStack
-         * PURPOSE: create a new stack and init X, Y, Z, T and the text entry
-         * PARAMETERS: --
+         * PURPOSE: Create a new stack and init X, Y, Z, T,A,B,C,D,E,F,G,H
+         * and the text entry for variabels: X, Y, Z, T and entryVar for variabels:A,B,C,D,E,F,G,H
+         * PARAMETERS: A File path that containt operations variabels value X, Y, Z, T,A,B,C,D,E,F,G,H
          */
 
-        public CStack(string path)
+        public CStack(string path, bool pathDefault = false)
         {
-            _path = path;
+            _path = pathDefault ? @".\variabelFile.txt" : path;
             address = new string[8, 2] {
                 { "A", "0" },
                 { "B", "0" },
@@ -69,10 +71,9 @@ namespace Inlamning_3_ra_kod
             entryVar = "";
 
             if (!File.Exists(_path))
-            {
-                fileExist = true;
                 return;
-            }
+
+            fileExist = true;
             using (StreamReader sr = new StreamReader(_path))
             {
                 int i = 0;
@@ -140,11 +141,22 @@ namespace Inlamning_3_ra_kod
          * RETURNS: --
          * FAILS: if the string digit does not contain a parseable integer, nothing
          *   is added to the entry
+         *  FAILS SOLVED: it compare every digit introduce, if is digit or not.
          */
         public void EntryAddNum(string digit)
         {
             int val;
-            if (int.TryParse(digit, out val))
+            bool isDigit = true;
+
+            for (int i = 0; i < digit.Length; i++)
+            {
+                if (!Char.IsDigit(digit[i]))
+                {
+                    isDigit = false;
+                }
+            }
+
+            if (isDigit && int.TryParse(digit, out val))
             {
                 entry = entry + val;
             }
@@ -153,8 +165,7 @@ namespace Inlamning_3_ra_kod
          * PURPOSE: adds a comma to the entry string
          * PARAMETERS: --
          * RETURNS: --
-         * FAILS: if the entry string already contains a comma, nothing is added
-         *   to the entry
+        
          */
         public void EntryAddComma()
         {
@@ -305,7 +316,10 @@ namespace Inlamning_3_ra_kod
          */
         public void RollSetX(double newX)
         {
-            T = Z; Z = Y; Y = X; X = newX;
+            T = Z; 
+            Z = Y; 
+            Y = X; 
+            X = newX;
         }
         /* METHOD: SetAddress
          * PURPOSE: 
@@ -374,7 +388,7 @@ namespace Inlamning_3_ra_kod
                 sw.WriteLine(lineZ);
                 string lineY = "2,Y," + Y;
                 sw.WriteLine(lineY);
-                string lineX = "2,Z," + X;
+                string lineX = "2,X," + X;
                 sw.WriteLine(lineX);
             }
             File.Delete(_path);
